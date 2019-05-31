@@ -7,6 +7,6 @@ namespace GeekBurger.Ingredients.Contract.Response
    public class IngredientsToUpsert
     {
         public List<string> Ingredients { get; set; }
-        public int ProductId { get; set; }
+        public int ProductId { get; set; } 
     }
 }
