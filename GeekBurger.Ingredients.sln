@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekBurger.Ingredients.Contract", "GeekBurger.Ingredients.Contract\GeekBurger.Ingredients.Contract.csproj", "{BA0A92CE-DB06-466C-9F60-01E0BEED4ED0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekBurger.Ingredients.Api", "GeekBurger.Ingredients.Api\GeekBurger.Ingredients.Api.csproj", "{83CDF4BD-465D-4BCF-85B5-6F0120DCF7D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekBurger.Ingredients.Api.Tests", "GeekBurger.Ingredients.Api.Tests\GeekBurger.Ingredients.Api.Tests.csproj", "{10001799-D00D-447D-8588-3C413F5AA3DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{BA0A92CE-DB06-466C-9F60-01E0BEED4ED0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA0A92CE-DB06-466C-9F60-01E0BEED4ED0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA0A92CE-DB06-466C-9F60-01E0BEED4ED0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83CDF4BD-465D-4BCF-85B5-6F0120DCF7D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83CDF4BD-465D-4BCF-85B5-6F0120DCF7D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83CDF4BD-465D-4BCF-85B5-6F0120DCF7D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83CDF4BD-465D-4BCF-85B5-6F0120DCF7D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10001799-D00D-447D-8588-3C413F5AA3DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10001799-D00D-447D-8588-3C413F5AA3DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10001799-D00D-447D-8588-3C413F5AA3DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10001799-D00D-447D-8588-3C413F5AA3DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
