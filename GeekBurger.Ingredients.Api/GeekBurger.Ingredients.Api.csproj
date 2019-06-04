@@ -9,6 +9,13 @@
     <PackageReference Include="GeekBurger.Products.Contract" Version="4.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Azure.Management.ServiceBus" Version="2.1.0" />
+    <PackageReference Include="Microsoft.Azure.Management.ServiceBus.Fluent" Version="1.22.2" />
+    <PackageReference Include="Microsoft.Azure.ServiceBus" Version="3.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GeekBurger.Ingredients.DomainModel\GeekBurger.Ingredients.DomainModel.csproj" />
   </ItemGroup>
 
 </Project>
