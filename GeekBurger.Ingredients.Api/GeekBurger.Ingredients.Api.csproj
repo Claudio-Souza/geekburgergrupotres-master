@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.1.1" />
     <PackageReference Include="GeekBurger.Products.Contract" Version="4.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
@@ -16,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GeekBurger.Ingredients.DomainModel\GeekBurger.Ingredients.DomainModel.csproj" />
+    <ProjectReference Include="..\GeekBurger.Ingredients.DataLayer\GeekBurger.Ingredients.DataLayer.csproj" />
   </ItemGroup>
 
 </Project>

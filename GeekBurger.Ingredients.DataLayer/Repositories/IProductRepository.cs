@@ -1,9 +1,10 @@
-﻿using GeekBurger.Ingredients.DomainModel;
+﻿using System.Threading.Tasks;
+using GeekBurger.Ingredients.DomainModel;
 
 namespace GeekBurger.Ingredients.DataLayer.Repositories
 {
     public interface IProductRepository
     {
-        void Save(Product product);
+        Task SaveAsync(Product product);
     }
 }

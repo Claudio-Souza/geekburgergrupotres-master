@@ -42,9 +42,11 @@ namespace GeekBurger.Ingredients.Api.Tests
         public async void Product_service_should_make_call_to_get_products()
         {
             //Arrange
+            var content = JsonConvert.SerializeObject(_fixture.Create<IEnumerable<ProductToGet>>());
+
             _httpHandlerMock.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(new HttpResponseMessage { StatusCode = HttpStatusCode.OK });
+                .ReturnsAsync(new HttpResponseMessage { StatusCode = HttpStatusCode.OK, Content = new StringContent(content) });
 
             var storeName = _fixture.Create<string>();
 
