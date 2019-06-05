@@ -3,8 +3,8 @@ using GeekBurger.Ingredients.DomainModel;
 
 namespace GeekBurger.Ingredients.DataLayer.Repositories
 {
-    public interface IProductRepository
+    public interface IIngredientRepository
     {
-        Task SaveAsync(Product product);
+        Task SaveAsync(Ingredient product);
     }
 }
