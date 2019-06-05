@@ -1,5 +1,6 @@
 ﻿using AutoFixture;
 using AutoMapper;
+using GeekBurger.Ingredients.Api.Services;
 using GeekBurger.Ingredients.Api.Subscribers;
 using GeekBurger.Ingredients.DataLayer;
 using GeekBurger.Ingredients.DomainModel;
@@ -21,6 +22,7 @@ namespace GeekBurger.Ingredients.Api.Tests
         private Fixture _fixture;
         private IQueueClient _queue;
         private IMapper _mapper;
+        private IMergeService _mergeService;
         private ServiceBusSettings _serviceBusSettings;
         private IUnitOfWork _unitOfWork;
 
@@ -33,11 +35,7 @@ namespace GeekBurger.Ingredients.Api.Tests
 
             _mapper = config.CreateMapper();
 
-            _serviceBusSettings = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .Build()
-                .GetSection(nameof(ServiceBusSettings))
-                .Get<ServiceBusSettings>();
+            _mergeService = Substitute.For<IMergeService>();
 
             _queue = Substitute.For<IQueueClient>();
 
@@ -49,7 +47,7 @@ namespace GeekBurger.Ingredients.Api.Tests
         }
 
         [Fact]
-        public async Task Upon_label_image_added_message_received_should_save_it_on_ingredients_repository()
+        public async Task Upon_label_image_added_message_received_should_call_merge_service()
         {
             //Arrange
             Func<Message, CancellationToken, Task> call = null;
@@ -58,7 +56,7 @@ namespace GeekBurger.Ingredients.Api.Tests
                 .Do(c => call = c.Arg<Func<Message, CancellationToken, Task>>());
 
 
-            var labelImageAddedSubscriber = new LabelImageAddedSubscriber(_mapper, _queue, _unitOfWork);
+            var labelImageAddedSubscriber = new LabelImageAddedSubscriber(_mapper, _mergeService, _queue, _unitOfWork);
 
             var messageObject = _fixture.Create<LabelImageAddedMessage>();
             var messageBody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(messageObject));
@@ -67,7 +65,7 @@ namespace GeekBurger.Ingredients.Api.Tests
             await call(new Message(messageBody), new CancellationToken());
 
             //Assert
-            await _unitOfWork.IngredientsRepository.Received().SaveAsync(Arg.Any<Ingredient>());
+            await _mergeService.Received().UpdateProductsMergesAsync(Arg.Any<Ingredient>());
         }
 
         [Fact]
@@ -80,7 +78,7 @@ namespace GeekBurger.Ingredients.Api.Tests
                 .Do(c => messageHandlerOptions = c.Arg<MessageHandlerOptions>());
 
 
-            var labelImageAddedSubscriber = new LabelImageAddedSubscriber(_mapper, _queue, _unitOfWork);
+            var labelImageAddedSubscriber = new LabelImageAddedSubscriber(_mapper, _mergeService, _queue, _unitOfWork);
 
             //Act
             await messageHandlerOptions.ExceptionReceivedHandler(_fixture.Create<ExceptionReceivedEventArgs>());

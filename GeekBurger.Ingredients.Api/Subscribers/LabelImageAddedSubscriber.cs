@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using GeekBurger.Ingredients.Api.Services;
 using GeekBurger.Ingredients.DataLayer;
 using GeekBurger.Ingredients.DomainModel;
 using Microsoft.Azure.ServiceBus;
@@ -14,12 +15,14 @@ namespace GeekBurger.Ingredients.Api.Subscribers
     public class LabelImageAddedSubscriber
     {
         private readonly IMapper _mapper;
+        private readonly IMergeService _mergeService;
         private readonly IQueueClient _queue;
         private readonly IUnitOfWork _unitOfWork;
 
-        public LabelImageAddedSubscriber(IMapper mapper, IQueueClient queue, IUnitOfWork unitOfWork)
+        public LabelImageAddedSubscriber(IMapper mapper, IMergeService mergeService, IQueueClient queue, IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
+            _mergeService = mergeService;
             _unitOfWork = unitOfWork;
 
             var messageHandlerOptions = new MessageHandlerOptions(this.ExceptionReceivedHandler)
@@ -39,8 +42,8 @@ namespace GeekBurger.Ingredients.Api.Subscribers
 
             var labelImageAddedMessage = JsonConvert.DeserializeObject<LabelImageAddedMessage>(content);
 
-            var product = _mapper.Map<Ingredient>(labelImageAddedMessage);
-            await _unitOfWork.IngredientsRepository.SaveAsync(product);
+            var ingredient = _mapper.Map<Ingredient>(labelImageAddedMessage);
+            await _mergeService.UpdateProductsMergesAsync(ingredient);
         }
 
         private async Task ExceptionReceivedHandler(ExceptionReceivedEventArgs arg)
