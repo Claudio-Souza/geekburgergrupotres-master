@@ -6,13 +6,13 @@ using System.Collections.Generic;
 
 namespace GeekBurger.Ingredients.DomainModel
 {
-    public class Product
+    public class Ingredient
     {
         [BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
         public string Id { get; set; }
 
         public string Name { get; set; }
 
-        public ICollection<string> Ingredients { get; set; }
+        public ICollection<string> Composition { get; set; }
     }
 }
