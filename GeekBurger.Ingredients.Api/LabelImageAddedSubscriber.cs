@@ -14,8 +14,8 @@ namespace GeekBurger.Ingredients.Api
     public class LabelImageAddedSubscriber
     {
         private readonly IMapper _mapper;
-        private IQueueClient _queue;
-        private IUnitOfWork _unitOfWork;
+        private readonly IQueueClient _queue;
+        private readonly IUnitOfWork _unitOfWork;
 
         public LabelImageAddedSubscriber(IMapper mapper, IQueueClient queue, IUnitOfWork unitOfWork)
         {
