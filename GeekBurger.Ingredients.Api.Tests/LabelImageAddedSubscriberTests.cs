@@ -6,6 +6,7 @@ using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using System;
 using System.Text;
 using System.Threading;
@@ -66,6 +67,28 @@ namespace GeekBurger.Ingredients.Api.Tests
 
             //Assert
             await _unitOfWork.ProductRepository.Received().SaveAsync(Arg.Any<Product>());
+        }
+
+        [Fact]
+        public async Task Upon_label_image_added_message_received_and_an_error_occur_should_log()
+        {
+            //Arrange
+            MessageHandlerOptions messageHandlerOptions = null;
+
+            _queue.When(q => q.RegisterMessageHandler(Arg.Any<Func<Message, CancellationToken, Task>>(), Arg.Any<MessageHandlerOptions>()))
+                .Do(c => messageHandlerOptions = c.Arg<MessageHandlerOptions>());
+
+
+            var labelImageAddedListener = new LabelImageAddedSubscriber(_mapper, _queue, _unitOfWork);
+
+            var messageObject = _fixture.Create<LabelImageAddedMessage>();
+            var messageBody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(messageObject));
+
+            //Act
+            await messageHandlerOptions.ExceptionReceivedHandler(_fixture.Create<ExceptionReceivedEventArgs>());
+
+            //Assert
+            await _unitOfWork.LogRepository.Received().SaveAsync(Arg.Any<string>());
         }
     }
 }

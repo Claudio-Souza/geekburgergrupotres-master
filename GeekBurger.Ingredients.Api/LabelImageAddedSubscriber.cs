@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using GeekBurger.Ingredients.DataLayer;
 using GeekBurger.Ingredients.DomainModel;
 using Microsoft.Azure.ServiceBus;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
+using System;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GeekBurger.Ingredients.Api
 {
@@ -36,20 +35,18 @@ namespace GeekBurger.Ingredients.Api
 
         private async Task ReceivedMessage(Message message, CancellationToken cancellationToken)
         {
-            await Task.Factory.StartNew(() =>
-            {
-                var content = Encoding.UTF8.GetString(message.Body);
+            var content = Encoding.UTF8.GetString(message.Body);
 
-                var labelImageAddedMessage = JsonConvert.DeserializeObject<LabelImageAddedMessage>(content);
-                
-                var product = _mapper.Map<Product>(labelImageAddedMessage);
-                _unitOfWork.ProductRepository.SaveAsync(product);
-            });
+            var labelImageAddedMessage = JsonConvert.DeserializeObject<LabelImageAddedMessage>(content);
+
+            var product = _mapper.Map<Product>(labelImageAddedMessage);
+            await _unitOfWork.ProductRepository.SaveAsync(product);
         }
 
-        private Task ExceptionReceivedHandler(ExceptionReceivedEventArgs arg)
+        private async Task ExceptionReceivedHandler(ExceptionReceivedEventArgs arg)
         {
-            throw new NotImplementedException();
+            await _unitOfWork.LogRepository.SaveAsync(arg.Exception.ToString());
         }
+
     }
 }

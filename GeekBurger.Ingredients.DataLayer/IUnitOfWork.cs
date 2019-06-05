@@ -6,5 +6,6 @@ namespace GeekBurger.Ingredients.DataLayer
     public interface IUnitOfWork
     {
         IProductRepository ProductRepository { get; }
+        ILogRepository LogRepository { get; }
     }
 }
