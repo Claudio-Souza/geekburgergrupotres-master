@@ -1,5 +1,6 @@
 ﻿using AutoFixture;
 using AutoMapper;
+using GeekBurger.Ingredients.Api.Subscribers;
 using GeekBurger.Ingredients.DataLayer;
 using GeekBurger.Ingredients.DomainModel;
 using Microsoft.Azure.ServiceBus;
