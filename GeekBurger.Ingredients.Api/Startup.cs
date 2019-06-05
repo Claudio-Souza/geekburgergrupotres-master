@@ -25,6 +25,9 @@ namespace GeekBurger.Ingredients.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var serviceBusSettings = Configuration.GetSection(nameof(ServiceBusSettings))
+                .Get<ServiceBusSettings>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
