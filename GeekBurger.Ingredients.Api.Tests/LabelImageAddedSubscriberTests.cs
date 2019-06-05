@@ -49,7 +49,7 @@ namespace GeekBurger.Ingredients.Api.Tests
         }
 
         [Fact]
-        public async Task Upon_label_image_added_message_received_should_save_it_on_product_repository()
+        public async Task Upon_label_image_added_message_received_should_save_it_on_ingredients_repository()
         {
             //Arrange
             Func<Message, CancellationToken, Task> call = null;
@@ -58,7 +58,7 @@ namespace GeekBurger.Ingredients.Api.Tests
                 .Do(c => call = c.Arg<Func<Message, CancellationToken, Task>>());
 
 
-            var labelImageAddedListener = new LabelImageAddedSubscriber(_mapper, _queue, _unitOfWork);
+            var labelImageAddedSubscriber = new LabelImageAddedSubscriber(_mapper, _queue, _unitOfWork);
 
             var messageObject = _fixture.Create<LabelImageAddedMessage>();
             var messageBody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(messageObject));
@@ -67,7 +67,7 @@ namespace GeekBurger.Ingredients.Api.Tests
             await call(new Message(messageBody), new CancellationToken());
 
             //Assert
-            await _unitOfWork.ProductRepository.Received().SaveAsync(Arg.Any<Product>());
+            await _unitOfWork.IngredientsRepository.Received().SaveAsync(Arg.Any<Ingredient>());
         }
 
         [Fact]
@@ -80,10 +80,7 @@ namespace GeekBurger.Ingredients.Api.Tests
                 .Do(c => messageHandlerOptions = c.Arg<MessageHandlerOptions>());
 
 
-            var labelImageAddedListener = new LabelImageAddedSubscriber(_mapper, _queue, _unitOfWork);
-
-            var messageObject = _fixture.Create<LabelImageAddedMessage>();
-            var messageBody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(messageObject));
+            var labelImageAddedSubscriber = new LabelImageAddedSubscriber(_mapper, _queue, _unitOfWork);
 
             //Act
             await messageHandlerOptions.ExceptionReceivedHandler(_fixture.Create<ExceptionReceivedEventArgs>());

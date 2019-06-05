@@ -20,7 +20,7 @@ namespace GeekBurger.Ingredients.Api.Subscribers
         public LabelImageAddedSubscriber(IMapper mapper, IQueueClient queue, IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
-            _queue = queue;
+            _unitOfWork = unitOfWork;
 
             var messageHandlerOptions = new MessageHandlerOptions(this.ExceptionReceivedHandler)
             {
@@ -28,9 +28,9 @@ namespace GeekBurger.Ingredients.Api.Subscribers
                 MaxConcurrentCalls = 3
             };
 
-            _queue.RegisterMessageHandler(this.ReceivedMessage, messageHandlerOptions);
+            queue.RegisterMessageHandler(this.ReceivedMessage, messageHandlerOptions);
 
-            _unitOfWork = unitOfWork;
+            _queue = queue;
         }
 
         private async Task ReceivedMessage(Message message, CancellationToken cancellationToken)
@@ -39,8 +39,8 @@ namespace GeekBurger.Ingredients.Api.Subscribers
 
             var labelImageAddedMessage = JsonConvert.DeserializeObject<LabelImageAddedMessage>(content);
 
-            var product = _mapper.Map<Product>(labelImageAddedMessage);
-            await _unitOfWork.ProductRepository.SaveAsync(product);
+            var product = _mapper.Map<Ingredient>(labelImageAddedMessage);
+            await _unitOfWork.IngredientsRepository.SaveAsync(product);
         }
 
         private async Task ExceptionReceivedHandler(ExceptionReceivedEventArgs arg)
