@@ -8,5 +8,7 @@ namespace GeekBurger.Ingredients.DataLayer
         IIngredientRepository IngredientsRepository { get; }
 
         ILogRepository LogRepository { get; }
+
+        IMergedProductsRepository MergedProductsRepository { get; }
     }
 }
