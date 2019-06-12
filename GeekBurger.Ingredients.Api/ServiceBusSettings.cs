@@ -7,6 +7,6 @@ namespace GeekBurger.Ingredients.Api
         public string SubscriptionName { get; set; }
         public string TopicName { get; set; }
         public string LabelImageAddedQueueName { get; set; }
-        public string ServiceBusConnectionString { get; internal set; }
+        public string ServiceBusConnectionString { get; set; }
     }
 }
