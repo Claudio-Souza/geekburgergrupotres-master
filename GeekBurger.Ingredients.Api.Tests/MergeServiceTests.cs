@@ -21,7 +21,7 @@ namespace GeekBurger.Ingredients.Api.Tests
             //var igredientList = fixture.CreateMany<>();
              
 
-            var mergeService = new MergeService();
+            //var mergeService = new MergeService();
 
 
             //Act

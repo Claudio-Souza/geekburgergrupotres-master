@@ -1,5 +1,6 @@
 ﻿using GeekBurger.Ingredients.DomainModel;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GeekBurger.Ingredients.DataLayer.Repositories
@@ -9,5 +10,9 @@ namespace GeekBurger.Ingredients.DataLayer.Repositories
         Task<ProductWithIngredients> InsertOrUpdate(ProductWithIngredients productWithIngredients);
 
         Task DeleteAsync(Guid productId);
+
+        Task<IEnumerable<ProductWithIngredients>> GetProductRestrictionByStore(Guid storeId, List<string> restrictions);
+        
+        IEnumerable<ProductWithIngredients> GetAll();
     }
 }

@@ -7,7 +7,7 @@ namespace GeekBurger.Ingredients.Contract.Request
     public class IngredientsToGet
     {
         public List<string> Restrictions { get; set; }
-        public int StoreId { get; set; }
+        public Guid StoreId { get; set; }
 
     }
 }

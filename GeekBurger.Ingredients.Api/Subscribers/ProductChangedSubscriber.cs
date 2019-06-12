@@ -48,9 +48,9 @@ namespace GeekBurger.Ingredients.Api.Subscribers
                 return;
             }
 
-            var product = _mapper.Map<ProductWithIngredients>(productChangedMessage);
+            //var product = _mapper.Map<ProductWithIngredients>(productChangedMessage);
 
-            await _mergeService.MergeProductWithIngredientsAsync(product);
+            await _mergeService.MergeProductWithIngredientsAsync(productChangedMessage.Product);
         }
 
         private async Task ExceptionReceivedHandler(ExceptionReceivedEventArgs arg)

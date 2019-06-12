@@ -1,4 +1,5 @@
 using AutoFixture;
+using AutoMapper;
 using GeekBurger.Ingredients.Api.Services;
 using GeekBurger.Products.Contract;
 using Microsoft.Extensions.Configuration;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Configuration.Binder;
 using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
+using NSubstitute;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,6 +25,8 @@ namespace GeekBurger.Ingredients.Api.Tests
 
         private HttpClient _client;
         private Fixture _fixture;
+        private IMapper _mapper;
+        private IMergeService _mergeService;
         private Mock<HttpMessageHandler> _httpHandlerMock;
         private ProductService _productService;
 
@@ -30,12 +34,17 @@ namespace GeekBurger.Ingredients.Api.Tests
         {
             _fixture = new Fixture();
 
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<MappingProfile>());
+            _mapper = new Mapper(config);
+
+            _mergeService = Substitute.For<IMergeService>();
+
             _httpHandlerMock = new Mock<HttpMessageHandler>();
             _client = new HttpClient(_httpHandlerMock.Object);
 
             _productsServiceUri = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetValue<string>("ProductsServiceUri");
 
-            _productService = new ProductService(_client, _productsServiceUri);
+            _productService = new ProductService(_productsServiceUri, _client, _mapper, _mergeService);
         }
 
         [Fact]
