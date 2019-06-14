@@ -80,7 +80,7 @@ namespace GeekBurger.Ingredients.Api.Tests
             await call(new Message(messageBody), new CancellationToken());
 
             //Assert
-            await _mergeService.Received().MergeProductWithIngredientsAsync(Arg.Any<ProductWithIngredients>());
+            await _mergeService.Received().MergeProductWithIngredientsAsync(Arg.Any<ProductToGet>());
         }
 
         [Fact]

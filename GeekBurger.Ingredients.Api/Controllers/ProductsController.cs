@@ -24,10 +24,10 @@ namespace GeekBurger.Ingredients.Api.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        [HttpGet("byrestrictions")]
-        public async Task<ActionResult<IEnumerable<IngredientsToUpsert>>> Get(IngredientsToGet request)
+        [HttpGet("byrestrictions/{storeId}/{restrictions}")]
+        public async Task<ActionResult<IEnumerable<IngredientsToUpsert>>> Get(Guid storeId, string restrictions)
         {
-            var productsWithRestrictions = await _unitOfWork.MergedProductsRepository.GetProductRestrictionByStore(request.StoreId, request.Restrictions);
+            var productsWithRestrictions = await _unitOfWork.MergedProductsRepository.GetProductRestrictionByStore(storeId, restrictions.Split('|').ToList());
 
             return Ok(_mapper.Map<IEnumerable<IngredientsToUpsert>>(productsWithRestrictions));
         }
