@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using GeekBurger.Ingredients.DataLayer;
 using GeekBurger.Ingredients.DomainModel;
 using GeekBurger.Products.Contract;
@@ -10,10 +11,12 @@ namespace GeekBurger.Ingredients.Api.Services
 {
     public class MergeService : IMergeService
     {
+        private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public MergeService(IUnitOfWork unitOfWork)
+        public MergeService(IMapper mapper, IUnitOfWork unitOfWork)
         {
+            _mapper = mapper;
             _unitOfWork = unitOfWork;
         }
 
@@ -21,6 +24,8 @@ namespace GeekBurger.Ingredients.Api.Services
         {
             var productIngredients = storeProduct.Items.Select(i => i.Name).ToList();
             var ingredients = await _unitOfWork.IngredientsRepository.GetByNamesAsync(productIngredients);
+
+            if (ingredients.Any() == false) { ingredients = _mapper.Map<IList<Ingredient>>(storeProduct.Items); }
 
             var productWithIngredients = new ProductWithIngredients
             {
